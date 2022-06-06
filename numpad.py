@@ -43,6 +43,13 @@ def init(display, pixels, keys, encoder, debounced_switch, init_plugin):
         kc.KEYPAD_ZERO, kc.KEYPAD_FORWARD_SLASH, kc.KEYPAD_ENTER
     )
 
+    for index in range(0,10):
+        pixels[index] = (10,10,10)
+    pixels[10] = (0,10,0)
+    pixels[11] = (10,0,10)
+
+    pixels.show()
+
     class Numpad:
         def update(self):
             key_event = keys.events.get()
@@ -51,7 +58,11 @@ def init(display, pixels, keys, encoder, debounced_switch, init_plugin):
                     pixels[key_event.key_number] = colors[key_event.key_number]
                     keyboard.send(numpad_mapping[key_event.key_number])
                 else:
-                    pixels[key_event.key_number] = (0,0,0)
+                    pixels[key_event.key_number] = (10,10,10)
+                    if key_event.key_number == 10:
+                        pixels[10] = (0,10,0)
+                    elif key_event.key_number == 11:
+                        pixels[11] = (10,0,10)
                 pixels.show()
 
             debounced_switch.update()
@@ -60,5 +71,10 @@ def init(display, pixels, keys, encoder, debounced_switch, init_plugin):
 
         def draw(self):
             pass
+
+        def tear_down(self):
+            for index in range(0,12):
+                pixels[index] = (0,0,0)
+            pixels.show()
 
     return Numpad()

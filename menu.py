@@ -81,4 +81,7 @@ def init(display, pixels, keys, encoder, debounced_switch, init_plugin):
         def draw(self):
             display.refresh()
 
+        def tear_down(self):
+            pass
+
     return MainMenu()

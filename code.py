@@ -37,11 +37,13 @@ current_time = last_time
 
 plugin = None
 
-
+# Function to load "plugin", i.e. the next code to run
 def init_plugin(name):
     global plugin
     print(f"Loading module {name}")
     print(gc.mem_free())
+    if plugin != None:
+        plugin.tear_down()
     plugin = None
     display.show(Group())
     display.refresh()
@@ -54,15 +56,20 @@ def init_plugin(name):
         import numpad
         plugin = numpad.init(display, pixels, keys, encoder, debounced_switch, init_plugin)
 
+# Start up with main menu
 init_plugin("Main")
 
+# Main loop
 while True:
     current_time = time.monotonic()
+
     # Update plugins
     if plugin != None:
+        # Update is called as many times as possible
         plugin.update()
 
-        if current_time - last_time >= 0.016:
+        # Draw we try to call 60fps
+        if current_time - last_time >= 0.0166:
             plugin.draw()
 
         last_time = current_time
