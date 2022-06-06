@@ -55,6 +55,9 @@ def init_plugin(name):
     if name == "Numpad":
         import numpad
         plugin = numpad.init(display, pixels, keys, encoder, debounced_switch, init_plugin)
+    if name == "Ball":
+        import ball
+        plugin = ball.init(display, pixels, keys, encoder, debounced_switch, init_plugin)
 
 # Start up with main menu
 init_plugin("Main")
@@ -71,8 +74,9 @@ while True:
         # Draw we try to call 60fps
         if current_time - last_time >= 0.0166:
             plugin.draw()
+            last_time = current_time
 
-        last_time = current_time
+
 
 
 
