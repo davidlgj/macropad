@@ -55,9 +55,14 @@ def init_plugin(name):
     if name == "Numpad":
         import numpad
         plugin = numpad.init(display, pixels, keys, encoder, debounced_switch, init_plugin)
+    if name == "Media":
+        import media
+        plugin = media.init(display, pixels, keys, encoder, debounced_switch, init_plugin)
     if name == "Ball":
         import ball
         plugin = ball.init(display, pixels, keys, encoder, debounced_switch, init_plugin)
+
+
 
 # Start up with main menu
 init_plugin("Main")

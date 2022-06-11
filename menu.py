@@ -3,7 +3,7 @@ import terminalio
 from adafruit_display_text import label
 import math
 
-menu_items = ("Numpad", "Ball")
+menu_items = ("Numpad", "Media", "Ball",)
 
 
 class Menu:
@@ -61,17 +61,23 @@ class Menu:
 
 
 def init(display, pixels, keys, encoder, debounced_switch, init_plugin):
+    # Offset encoder so we are at zero
+    encoder_offset = encoder.position
+    def encoder_pos():
+        return encoder.position - encoder_offset
+
     class MainMenu:
         def __init__(self):
             self.menu = Menu(menu_items)
             display.show(self.menu.group)
             display.refresh()
-            self.last_encoder = encoder.position
+            self.last_encoder = encoder_pos()
 
         def update(self):
-            if self.last_encoder != encoder.position:
-                self.menu.select(encoder.position)
-                self.last_encoder = encoder.position
+            pos = encoder_pos()
+            if self.last_encoder != pos:
+                self.menu.select(pos)
+                self.last_encoder = pos
                 display.refresh()
 
             debounced_switch.update()
